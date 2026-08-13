@@ -13,9 +13,8 @@ REQUIRED_DEV_PACKAGES=(
     gstreamer-dev
     gst-plugins-base-dev
     libsecret-dev
-    mesa-osmesa-dev
+    mesa-osmesa
     openssl-dev
-    egl-wayland-dev
     curl-dev
     dbus-dev
     glew-dev
@@ -39,7 +38,7 @@ REQUIRED_DEV_PACKAGES=(
 
 if [[ -n "$UPDATE_LIB" ]]
 then
-    REQUIRED_DEV_PACKAGES+=(webkit2gtk-dev)
+    REQUIRED_DEV_PACKAGES+=(webkit2gtk-4.1-dev)
     if [[ -n "$BUILD_DEBUG" ]]
     then
         REQUIRED_DEV_PACKAGES+=(openssl-dev curl-dev)
