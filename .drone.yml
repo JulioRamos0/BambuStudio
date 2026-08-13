@@ -4,7 +4,9 @@ name: alpine-arm64-build
 
 steps:
   - name: build
-    image: arm64v8/alpine:latest
+    # SHA256 correspondiente a la versión linux/arm64 (aarch64) de alpine:latest
+    image: alpine@sha256:e7a1a92a5bfeee40966aea60f0796b0e7917cc35591542701834f03a68fa3d18
+    pull: if-not-exists
     environment:
       # Limit parallel jobs to prevent Out of Memory errors on Termux/mobile devices
       CMAKE_BUILD_PARALLEL_LEVEL: 2
