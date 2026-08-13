@@ -1,0 +1,103 @@
+FOUND_GTK3=$(apk info -e gtk+3.0 || echo '')
+
+REQUIRED_DEV_PACKAGES=(
+    assimp-dev
+    autoconf
+    bash
+    boost-dev
+    build-base
+    bzip2-dev
+    cereal
+    cgal-dev
+    cmake
+    coreutils
+    curl-dev
+    dbus-dev
+    eigen-dev
+    eudev-dev
+    extra-cmake-modules
+    ffmpeg-dev
+    ffmpeg-libs
+    file
+    fuse-dev
+    gcompat
+    gettext
+    git
+    glew-dev
+    glfw-dev
+    glu-dev
+    gmp-dev
+    gst-plugins-base-dev
+    gstreamer-dev
+    gtk+3.0-dev
+    libgcc
+    libmspack-dev
+    libsecret-dev
+    libstdc++
+    libtool
+    libunwind-dev
+    libxkbcommon-dev
+    make
+    mesa-dev
+    mesa-gbm
+    mesa-gles
+    mpfr-dev
+    nasm
+    ninja
+    nlopt-dev
+    opencascade-dev
+    opencv-dev
+    openexr-dev
+    openssl-dev
+    openvdb-dev
+    pkgconf
+    texinfo
+    unzip
+    wget
+    wxwidgets-dev
+    wxwidgets-gtk3
+    x264-dev
+    yasm
+)
+
+if [[ -n "$UPDATE_LIB" ]]
+then
+    REQUIRED_DEV_PACKAGES+=(webkit2gtk-4.1-dev)
+    if [[ -n "$BUILD_DEBUG" ]]
+    then
+        REQUIRED_DEV_PACKAGES+=(openssl-dev curl-dev)
+    fi
+
+    # Update and install packages
+
+
+    # Use sudo if available and not root, otherwise just apk
+    if [ "$(id -u)" != "0" ] && command -v sudo >/dev/null 2>&1; then
+        sudo apk update
+        sudo apk add --no-cache ${REQUIRED_DEV_PACKAGES[@]} || true
+    else
+        apk update
+        apk add --no-cache ${REQUIRED_DEV_PACKAGES[@]} || true
+    fi
+
+    # Create a dummy execinfo.h for musl compatibility (replaces libexecinfo-dev)
+    if [ ! -f /usr/include/execinfo.h ]; then
+        if [ "$(id -u)" != "0" ] && command -v sudo >/dev/null 2>&1; then
+            SUDO_CMD="sudo"
+        else
+            SUDO_CMD=""
+        fi
+        $SUDO_CMD mkdir -p /usr/include
+        $SUDO_CMD sh -c 'echo "#ifndef _EXECINFO_H_" > /usr/include/execinfo.h'
+        $SUDO_CMD sh -c 'echo "#define _EXECINFO_H_" >> /usr/include/execinfo.h'
+        $SUDO_CMD sh -c 'echo "static inline int backtrace(void **buffer, int size) { return 0; }" >> /usr/include/execinfo.h'
+        $SUDO_CMD sh -c 'echo "static inline char **backtrace_symbols(void *const *buffer, int size) { return 0; }" >> /usr/include/execinfo.h'
+        $SUDO_CMD sh -c 'echo "static inline void backtrace_symbols_fd(void *const *buffer, int size, int fd) {}" >> /usr/include/execinfo.h'
+        $SUDO_CMD sh -c 'echo "#endif" >> /usr/include/execinfo.h'
+    fi
+
+    echo -e "done\n"
+    exit 0
+fi
+
+FOUND_GTK3_DEV=$(apk info -e gtk+3.0-dev || echo '')
