@@ -10,7 +10,6 @@ steps:
   - name: build
     image: alpine:latest
     environment:
-      # Limit parallel jobs to prevent Out of Memory errors on Termux/mobile devices
       CMAKE_BUILD_PARALLEL_LEVEL: 2
     commands:
       - apk update
