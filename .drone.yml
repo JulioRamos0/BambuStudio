@@ -8,12 +8,15 @@ platform:
 
 steps:
   - name: build
-    image: ubuntu:24.04
+    image: ubuntu:22.04
+    pull: if-not-exists
     environment:
       CMAKE_BUILD_PARALLEL_LEVEL: 2
+      DEBIAN_FRONTEND: noninteractive
     commands:
-      - apk update
-      - apk add --no-cache bash sudo coreutils
+      - apt-get update -y
+      - apt-get install -y bash sudo coreutils tzdata
+      # -u installs dependencies via linux.d/ubuntu
       - bash ./BuildLinux.sh -u
       # -d builds dependencies, -s builds bambu-studio
       # -r skips memory check (often fails in Termux/containers)

@@ -41,6 +41,8 @@ set(_patch_step "")
             -DPNG_TESTS=OFF
             -DDISABLE_DEPENDENCY_TRACKING=OFF
             -DCMAKE_POLICY_VERSION_MINIMUM=3.5
+            -DZLIB_INCLUDE_DIR=${DESTDIR}/usr/local/include
+            -DZLIB_LIBRARY=${DESTDIR}/usr/local/lib/libz.a
             ${_disable_neon_extension}
 )
 endif()
