@@ -6,7 +6,6 @@ platform:
   os: linux
   arch: arm64
 
-
 steps:
   - name: build
     image: alpine:latest
