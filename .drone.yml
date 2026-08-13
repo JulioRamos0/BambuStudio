@@ -11,7 +11,7 @@ steps:
     image: ubuntu:22.04
     pull: if-not-exists
     environment:
-      CMAKE_BUILD_PARALLEL_LEVEL: 2
+      CMAKE_BUILD_PARALLEL_LEVEL: 1
       DEBIAN_FRONTEND: noninteractive
     commands:
       - apt-get update -y
@@ -20,5 +20,5 @@ steps:
       - bash ./BuildLinux.sh -u
       # -d builds dependencies, -s builds bambu-studio
       # -r skips memory check (often fails in Termux/containers)
-      # -f disables automatic parallel limit calculation, respecting CMAKE_BUILD_PARALLEL_LEVEL
-      - bash ./BuildLinux.sh -ds -r -f
+      # -1 limits builds to 1 core to prevent RAM saturation (OOM kills)
+      - bash ./BuildLinux.sh -ds -r -1
