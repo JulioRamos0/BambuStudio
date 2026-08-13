@@ -1,0 +1,23 @@
+kind: pipeline
+type: docker
+name: alpine-arm64-build
+
+platform:
+  os: linux
+  arch: arm64
+
+steps:
+  - name: build
+    image: alpine:latest
+    environment:
+      # Limit parallel jobs to prevent Out of Memory errors on Termux/mobile devices
+      CMAKE_BUILD_PARALLEL_LEVEL: 2
+    commands:
+      - apk update
+      - apk add --no-cache bash sudo coreutils
+      # -u installs dependencies via linux.d/alpine
+      - bash ./BuildLinux.sh -u
+      # -d builds dependencies, -s builds bambu-studio
+      # -r skips memory check (often fails in Termux/containers)
+      # -f disables automatic parallel limit calculation, respecting CMAKE_BUILD_PARALLEL_LEVEL
+      - bash ./BuildLinux.sh -ds -r -f

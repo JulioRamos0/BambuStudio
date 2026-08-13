@@ -1,0 +1,62 @@
+FOUND_GTK3=$(apk info -e gtk+3.0 || echo '')
+
+REQUIRED_DEV_PACKAGES=(
+    autoconf
+    build-base
+    ninja
+    cmake
+    extra-cmake-modules
+    file
+    gettext
+    git
+    wget
+    gstreamer-dev
+    gst-plugins-base-dev
+    libsecret-dev
+    mesa-osmesa-dev
+    openssl-dev
+    egl-wayland-dev
+    curl-dev
+    dbus-dev
+    glew-dev
+    eudev-dev
+    libmspack-dev
+    mesa-dev
+    gtk+3.0-dev
+    libxkbcommon-dev
+    libtool
+    libunwind-dev
+    fuse-dev
+    texinfo
+    nasm
+    yasm
+    x264-dev
+    bzip2-dev
+    pkgconf
+    coreutils
+    bash
+)
+
+if [[ -n "$UPDATE_LIB" ]]
+then
+    REQUIRED_DEV_PACKAGES+=(webkit2gtk-dev)
+    if [[ -n "$BUILD_DEBUG" ]]
+    then
+        REQUIRED_DEV_PACKAGES+=(openssl-dev curl-dev)
+    fi
+
+    # Update and install packages
+    # Use sudo if available and not root, otherwise just apk
+    if [ "$(id -u)" != "0" ] && command -v sudo >/dev/null 2>&1; then
+        sudo apk update
+        sudo apk add --no-cache ${REQUIRED_DEV_PACKAGES[@]}
+    else
+        apk update
+        apk add --no-cache ${REQUIRED_DEV_PACKAGES[@]}
+    fi
+
+    echo -e "done\n"
+    exit 0
+fi
+
+FOUND_GTK3_DEV=$(apk info -e gtk+3.0-dev || echo '')
