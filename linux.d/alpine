@@ -1,39 +1,66 @@
 FOUND_GTK3=$(apk info -e gtk+3.0 || echo '')
 
 REQUIRED_DEV_PACKAGES=(
+    assimp-dev
     autoconf
+    bash
+    boost-dev
     build-base
-    ninja
+    bzip2-dev
+    cereal
+    cgal-dev
     cmake
+    coreutils
+    curl-dev
+    cURL-dev
+    dbus-dev
+    eigen-dev
+    eudev-dev
     extra-cmake-modules
+    ffmpeg-dev
+    ffmpeg-libs
     file
+    fuse-dev
+    gcompat
     gettext
     git
-    wget
-    gstreamer-dev
-    gst-plugins-base-dev
-    libsecret-dev
-    mesa-osmesa
-    openssl-dev
-    curl-dev
-    dbus-dev
     glew-dev
-    eudev-dev
-    libmspack-dev
-    mesa-dev
+    glfw-dev
+    glu-dev
+    gmp-dev
+    gst-plugins-base-dev
+    gstreamer-dev
     gtk+3.0-dev
-    libxkbcommon-dev
+    gtk+3.0-dev
+    libgcc
+    libmspack-dev
+    libsecret-dev
+    libstdc++
     libtool
     libunwind-dev
-    fuse-dev
-    texinfo
+    libxkbcommon-dev
+    make
+    mesa-dev
+    mesa-gbm
+    mesa-gles
+    mpfr-dev
     nasm
-    yasm
-    x264-dev
-    bzip2-dev
+    ninja
+    nlopt-dev
+    opencascade-dev
+    opencv-dev
+    openexr-dev
+    openssl-dev
+    openvdb-dev
     pkgconf
-    coreutils
-    bash
+    tbb-dev
+    texinfo
+    unzip
+    wget
+    wxwidgets-dev
+    wxwidgets-gtk3
+    x264-dev
+    yasm
 )
 
 if [[ -n "$UPDATE_LIB" ]]
