@@ -69,20 +69,7 @@ then
     fi
 
     # Update and install packages
-    # Create a dummy execinfo.h for musl compatibility (replaces libexecinfo-dev)
-    if [ ! -f /usr/include/execinfo.h ]; then
-        if [ "$(id -u)" != "0" ] && command -v sudo >/dev/null 2>&1; then
-            SUDO_CMD="sudo"
-        else
-            SUDO_CMD=""
-        fi
-        $SUDO_CMD sh -c 'echo "#ifndef _EXECINFO_H_" > /usr/include/execinfo.h'
-        $SUDO_CMD sh -c 'echo "#define _EXECINFO_H_" >> /usr/include/execinfo.h'
-        $SUDO_CMD sh -c 'echo "static inline int backtrace(void **buffer, int size) { return 0; }" >> /usr/include/execinfo.h'
-        $SUDO_CMD sh -c 'echo "static inline char **backtrace_symbols(void *const *buffer, int size) { return 0; }" >> /usr/include/execinfo.h'
-        $SUDO_CMD sh -c 'echo "static inline void backtrace_symbols_fd(void *const *buffer, int size, int fd) {}" >> /usr/include/execinfo.h'
-        $SUDO_CMD sh -c 'echo "#endif" >> /usr/include/execinfo.h'
-    fi
+
 
     # Use sudo if available and not root, otherwise just apk
     if [ "$(id -u)" != "0" ] && command -v sudo >/dev/null 2>&1; then
@@ -91,6 +78,22 @@ then
     else
         apk update
         apk add --no-cache ${REQUIRED_DEV_PACKAGES[@]} || true
+    fi
+
+    # Create a dummy execinfo.h for musl compatibility (replaces libexecinfo-dev)
+    if [ ! -f /usr/include/execinfo.h ]; then
+        if [ "$(id -u)" != "0" ] && command -v sudo >/dev/null 2>&1; then
+            SUDO_CMD="sudo"
+        else
+            SUDO_CMD=""
+        fi
+        $SUDO_CMD mkdir -p /usr/include
+        $SUDO_CMD sh -c 'echo "#ifndef _EXECINFO_H_" > /usr/include/execinfo.h'
+        $SUDO_CMD sh -c 'echo "#define _EXECINFO_H_" >> /usr/include/execinfo.h'
+        $SUDO_CMD sh -c 'echo "static inline int backtrace(void **buffer, int size) { return 0; }" >> /usr/include/execinfo.h'
+        $SUDO_CMD sh -c 'echo "static inline char **backtrace_symbols(void *const *buffer, int size) { return 0; }" >> /usr/include/execinfo.h'
+        $SUDO_CMD sh -c 'echo "static inline void backtrace_symbols_fd(void *const *buffer, int size, int fd) {}" >> /usr/include/execinfo.h'
+        $SUDO_CMD sh -c 'echo "#endif" >> /usr/include/execinfo.h'
     fi
 
     echo -e "done\n"
