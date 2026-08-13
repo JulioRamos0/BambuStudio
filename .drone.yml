@@ -1,6 +1,6 @@
 kind: pipeline
 type: docker
-name: alpine-arm64-build
+name: ubuntu-arm64-build
 
 platform:
   os: linux
@@ -8,13 +8,12 @@ platform:
 
 steps:
   - name: build
-    image: alpine:latest
+    image: ubuntu:24.04
     environment:
       CMAKE_BUILD_PARALLEL_LEVEL: 2
     commands:
       - apk update
       - apk add --no-cache bash sudo coreutils
-      # -u installs dependencies via linux.d/alpine
       - bash ./BuildLinux.sh -u
       # -d builds dependencies, -s builds bambu-studio
       # -r skips memory check (often fails in Termux/containers)
