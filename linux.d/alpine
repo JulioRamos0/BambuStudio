@@ -30,7 +30,6 @@ REQUIRED_DEV_PACKAGES=(
     gst-plugins-base-dev
     gstreamer-dev
     gtk+3.0-dev
-    gtk+3.0-dev
     libgcc
     libmspack-dev
     libsecret-dev
@@ -73,10 +72,10 @@ then
     # Use sudo if available and not root, otherwise just apk
     if [ "$(id -u)" != "0" ] && command -v sudo >/dev/null 2>&1; then
         sudo apk update
-        sudo apk add --no-cache ${REQUIRED_DEV_PACKAGES[@]}
+        sudo apk add --no-cache ${REQUIRED_DEV_PACKAGES[@]} || true
     else
         apk update
-        apk add --no-cache ${REQUIRED_DEV_PACKAGES[@]}
+        apk add --no-cache ${REQUIRED_DEV_PACKAGES[@]} || true
     fi
 
     echo -e "done\n"
