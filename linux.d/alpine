@@ -12,7 +12,6 @@ REQUIRED_DEV_PACKAGES=(
     cmake
     coreutils
     curl-dev
-    cURL-dev
     dbus-dev
     eigen-dev
     eudev-dev
@@ -53,7 +52,6 @@ REQUIRED_DEV_PACKAGES=(
     openssl-dev
     openvdb-dev
     pkgconf
-    tbb-dev
     texinfo
     unzip
     wget
