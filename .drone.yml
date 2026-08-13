@@ -2,13 +2,9 @@ kind: pipeline
 type: docker
 name: alpine-arm64-build
 
-platform:
-  os: linux
-  arch: arm64
-
 steps:
   - name: build
-    image: alpine:latest
+    image: arm64v8/alpine:latest
     environment:
       # Limit parallel jobs to prevent Out of Memory errors on Termux/mobile devices
       CMAKE_BUILD_PARALLEL_LEVEL: 2
