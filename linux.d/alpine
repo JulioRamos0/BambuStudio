@@ -36,6 +36,7 @@ REQUIRED_DEV_PACKAGES=(
     libstdc++
     libtool
     libunwind-dev
+    libexecinfo-dev
     libxkbcommon-dev
     make
     mesa-dev
