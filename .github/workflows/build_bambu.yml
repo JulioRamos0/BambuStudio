@@ -186,6 +186,24 @@ jobs:
       #     cd ${{ github.workspace }}/resources/profiles
       #     zip -r orca_custom_preset_tests.zip user/
 
+      - name: Build BambuuARM network plugin
+        if: startsWith(inputs.os, 'ubuntu')
+        shell: bash
+        run: |
+          git clone https://github.com/BrandedTamarasu-glitch/BambuuARM.git
+          cd BambuuARM
+          g++ -std=c++17 -fPIC -shared -O2 -g0 -Wall -Wextra -I"${{ github.workspace }}/src/slic3r/Utils" libbambu_networking_stub.cpp -lssl -lcrypto -lcurl -o libbambu_networking.so
+          g++ -std=c++17 -fPIC -shared -O2 -g0 -Wall -Wextra -I"${{ github.workspace }}/src/slic3r/GUI" libBambuSource_stub.cpp -lssl -lcrypto -o libBambuSource.so
+
+      - name: Upload artifacts BambuuARM
+        if: ${{ ! env.ACT && startsWith(inputs.os, 'ubuntu') }}
+        uses: actions/upload-artifact@v6
+        with:
+          name: BambuuARM_Plugins_${{inputs.os}}_${{ env.ver }}
+          path: |
+            BambuuARM/libbambu_networking.so
+            BambuuARM/libBambuSource.so
+
       - name: Upload artifacts Ubuntu
         if: ${{ ! env.ACT && startsWith(inputs.os, 'ubuntu') }}
         uses: actions/upload-artifact@v6
