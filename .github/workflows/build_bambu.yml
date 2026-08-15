@@ -192,6 +192,7 @@ jobs:
         run: |
           git clone https://github.com/BrandedTamarasu-glitch/BambuuARM.git
           cd BambuuARM
+          sed -i "s/return \"02.07.01.62\"/return \"${{ env.ver_pure }}\"/g" libbambu_networking_stub.cpp
           g++ -std=c++17 -fPIC -shared -O2 -g0 -Wall -Wextra -I"${{ github.workspace }}/src/slic3r/Utils" libbambu_networking_stub.cpp -lssl -lcrypto -lcurl -o libbambu_networking.so
           g++ -std=c++17 -fPIC -shared -O2 -g0 -Wall -Wextra -I"${{ github.workspace }}/src/slic3r/GUI" libBambuSource_stub.cpp -lssl -lcrypto -o libBambuSource.so
 
